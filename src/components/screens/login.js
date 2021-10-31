@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {LoginData, authenticate} from "../../auth/index";
 import Loading from "../parts/loading";
+import HeadMeta from "../parts/head";
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -34,15 +35,15 @@ class Login extends Component {
             password: password,
         };
         LoginData(data).then((results) => {
-            console.log(results)
-            if (results.error) {
-                this.setState({error: results.error, loading: false});
-                alert(results.error);
+            console.log(results.status)
+            if (results.data.error) {
+                this.setState({error: results.data.error, loading: false});
+                alert(results.data.error);
             }else {
-                authenticate(results, () => {
+                authenticate(results.data, () => {
                     this.setState({
                         login: true
-                    })
+                    });
                 });
             }
         });
@@ -75,12 +76,19 @@ class Login extends Component {
     )
 
     render() {
+        const head = {
+            title: 'Login',
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow'
+        }
         const {username, password, login,loading} = this.state;
         if (login) {
             return <Redirect to='/'/>
         }
         return (
             <>
+                <HeadMeta head={head}/>
                 <div className="container">
                     <h2 className="text-center">Login</h2>
                     {loading ? (<Loading/>):("")}

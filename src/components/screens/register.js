@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {userRegister} from "../../actions/crud";
 import {Redirect} from "react-router-dom";
 import Loading from "../parts/loading";
+import HeadMeta from "../parts/head";
 
 class Register extends Component {
 
@@ -53,6 +54,32 @@ class Register extends Component {
         }).catch((e) => {
             console.log(e)
         })
+    }
+
+    render() {
+        const head = {
+            title: 'Register',
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow'
+        }
+        if (this.state.redirect) {
+            return <Redirect to="/"/>;
+        }
+        const {firstName, lastName, password, username, email, address, gender} = this.state;
+        return (
+            <>
+                <HeadMeta head={head}/>
+                <div className="container">
+                    <div className="row">
+                        {this.state.loading === true ? (<Loading/>) : ("")}
+                        {this.registerForm(firstName, lastName, password, username, email, address, gender)}
+                    </div>
+
+                </div>
+            </>
+
+        );
     }
 
     registerForm = (firstName, lastName, password, username, email, address, gender) => (
@@ -123,22 +150,6 @@ class Register extends Component {
             <button onClick={this.saveRegister} className="btn btn-primary">Register</button>
         </div>
     )
-
-    render() {
-        if (this.state.redirect) {
-            return <Redirect to="/"/>;
-        }
-        const {firstName, lastName, password, username, email, address, gender} = this.state;
-        return (
-            <div className="container">
-                <div className="row">
-                    {this.state.loading === true ? (<Loading/>) : ("")}
-                    {this.registerForm(firstName, lastName, password, username, email, address, gender)}
-                </div>
-
-            </div>
-        );
-    }
 }
 
 const mapStateToProps = (state) => {

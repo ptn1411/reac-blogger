@@ -22,7 +22,7 @@ class Navbar extends Component {
                             <Link className="nav-link" to="/register">Register</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link disabled" to="/">Disabled</Link>
+                            <Link className="nav-link" to="/newpost">New Post</Link>
                         </li>
                     </ul>
                 </div>

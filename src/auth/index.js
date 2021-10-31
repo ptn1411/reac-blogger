@@ -1,14 +1,13 @@
 import Auth from "../services/auth.service";
 
-export const LoginData = (data) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const results = await Auth.postLogin(data);
-            resolve(results);
-        } catch (error) {
-            reject(error)
-        }
-    });
+export const LoginData = async (data) => {
+    try {
+        const results = await Auth.postLogin(data);
+        return Promise.resolve(results);
+    } catch (error) {
+        return Promise.reject(error)
+    }
+
 }
 
 export const authenticate = (jwt, next) => {

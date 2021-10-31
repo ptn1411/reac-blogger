@@ -6,6 +6,7 @@ import Crud from "../../services/crud.service";
 import {userDelete, userEdit} from "../../actions/crud";
 import moment from 'moment';
 import Loading from "../parts/loading";
+import HeadMeta from "../parts/head";
 
 class User extends Component {
 
@@ -161,7 +162,7 @@ class User extends Component {
                 <p>{date}</p>
             </div>
 
-            <button onClick={this.editSubmit} className="btn btn-success m-1">Edit</button>
+            <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
             <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
 
         </div>
@@ -169,20 +170,30 @@ class User extends Component {
 
     render() {
 
+        const head = {
+            title: 'User Profile',
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow'
+        }
+
         const {username, firstName, lastName, email, address, gender, createdAt, loading} = this.state;
         const date = moment(createdAt).format("DD/MM/YYYY");
         if (this.state.redirect) {
             return <Redirect to="/"/>;
         }
         return (
+            <>
+                <HeadMeta head={head}/>
+                <div className="container">
+                    {loading ? (<Loading/>) : ("")}
+                    <div className="row">
+                        {loading ? ("") : (this.userForm(username, firstName, lastName, email, address, gender, date))}
+                    </div>
 
-            <div className="container">
-                {loading ? (<Loading/>) : ("")}
-                <div className="row">
-                    {loading ? ("") : (this.userForm(username, firstName, lastName, email, address, gender, date))}
                 </div>
+            </>
 
-            </div>
         );
     }
 }

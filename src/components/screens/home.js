@@ -3,6 +3,7 @@ import Card from "../parts/card";
 import {connect} from "react-redux";
 import {getAllUser} from "../../actions/crud";
 import Loading from "../parts/loading";
+import HeadMeta from "../parts/head";
 
 class Home extends Component {
     constructor(props) {
@@ -13,9 +14,9 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllUser().then(res=>{
+        this.props.getAllUser().then(res => {
             this.setState({loading: false});
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
         })
 
@@ -23,12 +24,19 @@ class Home extends Component {
 
 
     render() {
+
+        const head = {
+            title: 'Home',
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow'
+        }
         const {loading} = this.state;
 
         const {crud} = this.props;
         return (
             <>
-
+                <HeadMeta head={head}/>
                 <div className="container">
                     <h1 className="text-center">Home</h1>
                     {loading ? (<Loading/>) : ("")}
