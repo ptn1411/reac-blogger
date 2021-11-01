@@ -55,33 +55,6 @@ class Register extends Component {
             console.log(e)
         })
     }
-
-    render() {
-        const head = {
-            title: 'Register',
-            description: 'Nam dep trai',
-            keywords: 'Nam dep trai,react',
-            robots: 'noindex,nofollow'
-        }
-        if (this.state.redirect) {
-            return <Redirect to="/"/>;
-        }
-        const {firstName, lastName, password, username, email, address, gender} = this.state;
-        return (
-            <>
-                <HeadMeta head={head}/>
-                <div className="container">
-                    <div className="row">
-                        {this.state.loading === true ? (<Loading/>) : ("")}
-                        {this.registerForm(firstName, lastName, password, username, email, address, gender)}
-                    </div>
-
-                </div>
-            </>
-
-        );
-    }
-
     registerForm = (firstName, lastName, password, username, email, address, gender) => (
         <div className="col-8">
 
@@ -141,7 +114,7 @@ class Register extends Component {
                     <label htmlFor="inputState">Sex</label>
                     <select id="inputState" className="form-control"
                             value={gender}
-                            onChange={this.onChangeForm("gender")}>>
+                            onChange={this.onChangeForm("gender")}>
                         <option value="0">Men</option>
                         <option value="2">Female</option>
                     </select>
@@ -150,6 +123,33 @@ class Register extends Component {
             <button onClick={this.saveRegister} className="btn btn-primary">Register</button>
         </div>
     )
+    render() {
+        const head = {
+            title: 'Register',
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow'
+        }
+        if (this.state.redirect) {
+            return <Redirect to="/"/>;
+        }
+        const {firstName, lastName, password, username, email, address, gender} = this.state;
+        return (
+            <>
+                <HeadMeta head={head}/>
+                <div className="container">
+                    <div className="row">
+                        {this.state.loading === true ? (<Loading/>) : ("")}
+                        {this.registerForm(firstName, lastName, password, username, email, address, gender)}
+                    </div>
+
+                </div>
+            </>
+
+        );
+    }
+
+
 }
 
 const mapStateToProps = (state) => {
