@@ -5,12 +5,11 @@ import Loading from "./loading";
 const Card = (props) => {
     const {user} = props;
 
-
     return (
         <>{user ?  user.map((user,i) => {
 
             return (
-                <div key={i} className="card" style={{width: "18rem"}}>
+                <div key={i} className="card" style={{width: "25%"}}>
                     {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                     <img className="card-img-top" src={avatar} onError={i=>(i.target.src=`${avatar}`)} alt="Card image cap"/>
                     <div className="card-body">

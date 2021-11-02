@@ -25,7 +25,7 @@ class Navbar extends Component {
                             <Link className="nav-link" to="/newpost">New Post</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/post">Post</Link>
+                            <Link className="nav-link" to="/posts">Posts</Link>
                         </li>
                     </ul>
                 </div>

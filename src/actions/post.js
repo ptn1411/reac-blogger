@@ -19,3 +19,15 @@ export const createPostData = (data) => async (dispatch) => {
         return Promise.reject(err);
     }
 }
+export const getPostData = () => async (dispatch) => {
+    try {
+        const res = await Post.getAll();
+        dispatch({
+            type: POST_ALL,
+            payload: res.data.data,
+        });
+        return Promise.resolve(res.data.data);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}

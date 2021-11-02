@@ -7,7 +7,7 @@ import Login from "../components/screens/login";
 import User from "../components/screens/user"
 import Register from "../components/screens/register";
 import Newpost from "../components/screens/newpost";
-import Post from "../components/screens/post"
+import Posts from "../components/screens/posts"
 class Menu extends Component {
     render() {
         return (
@@ -19,7 +19,7 @@ class Menu extends Component {
                     <Route exact  path="/register" component={Register}/>
                     <Route exact  path="/user/:uuid" component={User}/>
                     <Route exact  path="/newpost" component={Newpost}/>
-                    <Route exact  path="/post" component={Post}/>
+                    <Route exact  path="/posts" component={Posts}/>
                 </Switch>
                 <Footer/>
             </Router>
