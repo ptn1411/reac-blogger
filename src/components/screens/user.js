@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import Crud from "../../services/crud.service";
-import {userDelete, userEdit} from "../../actions/crud";
+import {userDelete, userEdit} from "../../actions/user";
 import moment from 'moment';
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
@@ -200,7 +200,7 @@ class User extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        crud: state.crud,
+        user: state.user,
     };
 };
 export default connect(mapStateToProps, {

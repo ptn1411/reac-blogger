@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import HeadMeta from "../parts/head";
 import TinyEditorComponent from "../parts/TinyEditorComponent";
 import {isAuthenticated} from "../../auth";
+import {createPostData} from "../../actions/post";
 
 class Newpost extends Component {
 
@@ -34,14 +36,14 @@ class Newpost extends Component {
     }
 
     onChangeForm = name => event => {
-        this.setState({ error: "" });
+        this.setState({error: ""});
         const value = name === "image" ? event.target.files[0] : event.target.value;
 
         const fileSize = name === "image" ? event.target.files[0].size : 0;
 
         this.formData.set(name, value);
 
-        this.setState({ [name]: value, fileSize });
+        this.setState({[name]: value, fileSize});
 
         // const value = event.target.value;
         // this.setState({
@@ -49,9 +51,35 @@ class Newpost extends Component {
         // });
     }
 
+
     handleSubmit(event) {
-        alert('An essay was submitted: ');
         event.preventDefault();
+        const {
+            title,
+            view_number,
+            image,
+            summary,
+            content,
+            category_id,
+            user_uuid
+        } = this.state;
+
+            this.formData.set('title', title);
+            this.formData.set('view_number', view_number);
+            this.formData.set('summary', summary);
+            this.formData.set('image', image);
+            this.formData.set('content', content);
+            this.formData.set('category_id', category_id);
+            this.formData.set('user_uuid', user_uuid);
+
+            this.props.createPostData(this.formData).then(result => {
+                console.log(result);
+                alert(result.post_uuid);
+            }).catch(err=>{
+                console.log(err)
+            });
+
+
     }
 
     initUser() {
@@ -130,4 +158,11 @@ class Newpost extends Component {
     }
 }
 
-export default Newpost;
+const mapStateToProps = (state) => {
+    return {
+        post: state.post,
+    };
+};
+export default connect(mapStateToProps, {
+    createPostData
+})(Newpost);

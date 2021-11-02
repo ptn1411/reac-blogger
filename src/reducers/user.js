@@ -7,29 +7,29 @@ import {
 
 const initialState = [];
 
-function crudReducer(crud = initialState, action) {
+function crudReducer(user = initialState, action) {
     const {type, payload} = action;
 
     switch (type) {
         case GET_ALL:
             return payload;
         case REGISTER_USER:
-            return [...crud,payload];
+            return [...user,payload];
         case EDIT_USER:
-            return crud.map((crud) => {
-                if (crud.uuid === payload.uuid) {
+            return user.map((user) => {
+                if (user.uuid === payload.uuid) {
                     return {
-                        ...crud,
+                        ...user,
                         ...payload,
                     };
                 } else {
-                    return crud;
+                    return user;
                 }
             });
         case DELETE_USER:
-            return crud.filter(({ uuid }) => uuid !== payload.uuid);
+            return user.filter(({ uuid }) => uuid !== payload.uuid);
         default:
-            return crud;
+            return user;
     }
 };
 

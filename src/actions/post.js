@@ -10,7 +10,6 @@ import Post from "../services/post.service";
 export const createPostData = (data) => async (dispatch) => {
     try {
         const res = await Post.createPost(data);
-
         dispatch({
             type: CREATE_POST,
             payload: res.data.data,

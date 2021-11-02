@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import crud from "./crud";
+import user from "./user";
 import post from "./post";
 
 export default combineReducers({
-    crud,
+    user,
     post
 });

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {userRegister} from "../../actions/crud";
+import {userRegister} from "../../actions/user";
 import {Redirect} from "react-router-dom";
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
@@ -154,7 +154,7 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        crud: state.crud,
+        user: state.user,
     };
 };
 export default connect(mapStateToProps, {

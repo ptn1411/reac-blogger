@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Card from "../parts/card";
 import {connect} from "react-redux";
-import {getAllUser} from "../../actions/crud";
+import {getAllUser} from "../../actions/user";
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
 
@@ -33,7 +33,7 @@ class Home extends Component {
         }
         const {loading} = this.state;
 
-        const {crud} = this.props;
+        const {user} = this.props;
         return (
             <>
                 <HeadMeta head={head}/>
@@ -41,7 +41,7 @@ class Home extends Component {
                     <h1 className="text-center">Home</h1>
                     {loading ? (<Loading/>) : ("")}
                     <div className="row">
-                        <Card cards={crud}/>
+                        <Card user={user}/>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@ class Home extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        crud: state.crud,
+        user: state.user,
     };
 };
 export default connect(mapStateToProps, {
