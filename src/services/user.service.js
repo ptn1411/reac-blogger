@@ -1,6 +1,6 @@
 import axios from "../axios/axios";
 
-class Crud {
+class User {
     getAll() {
         return axios.get(`/users`);
     }
@@ -19,4 +19,4 @@ class Crud {
 
 }
 
-export default new Crud();
+export default new User();

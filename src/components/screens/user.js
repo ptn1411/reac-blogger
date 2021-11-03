@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import Crud from "../../services/crud.service";
+import Crud from "../../services/user.service";
 import {userDelete, userEdit} from "../../actions/user";
 import moment from 'moment';
 import Loading from "../parts/loading";

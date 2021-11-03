@@ -5,11 +5,11 @@ import {
     DELETE_USER
 } from "./types";
 
-import Crud from "../services/crud.service";
+import User from "../services/user.service";
 
 export const getAllUser = () => async (dispatch) => {
     try {
-        const res = await Crud.getAll();
+        const res = await User.getAll();
 
         dispatch({
             type: GET_ALL,
@@ -22,7 +22,7 @@ export const getAllUser = () => async (dispatch) => {
 };
 export const userRegister = (data) => async (dispatch) => {
     try {
-        const res = await Crud.createUser(data);
+        const res = await User.createUser(data);
 
         dispatch({
             type: REGISTER_USER,
@@ -35,7 +35,7 @@ export const userRegister = (data) => async (dispatch) => {
 };
 export const userEdit = (uuid,data) => async (dispatch) => {
     try {
-        const res = await Crud.editUser(uuid,data);
+        const res = await User.editUser(uuid,data);
         dispatch({
             type: EDIT_USER,
             payload: res.data.data,
@@ -47,7 +47,7 @@ export const userEdit = (uuid,data) => async (dispatch) => {
 };
 export const userDelete = (uuid) => async (dispatch) => {
     try {
-        const res = await Crud.deleteUser(uuid);
+        const res = await User.deleteUser(uuid);
         dispatch({
             type: DELETE_USER,
             payload: res.data.data,

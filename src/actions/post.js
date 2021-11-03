@@ -2,7 +2,7 @@ import {
     POST_ALL,
     DELETE_POST,
     CREATE_POST,
-    EDIT_POST,
+    EDIT_POST
 } from "./types";
 import Post from "../services/post.service";
 

@@ -73,7 +73,6 @@ class Newpost extends Component {
             this.formData.set('user_uuid', user_uuid);
 
             this.props.createPostData(this.formData).then(result => {
-                console.log(result);
                 alert(result.post_uuid);
             }).catch(err=>{
                 console.log(err)

@@ -16,7 +16,8 @@ const Postitem = (props) => {
                                   <h5 className="card-title">{postitem.title}</h5>
                                   <p className="card-text">{postitem.summary}</p>
                                   <p className="card-text"><small className="text-muted">{moment(postitem.createdAt).format("DD/MM/YYYY")}</small></p>
-                                  <Link to={`/post/${postitem.post_uuid}`} className="btn btn-primary">View</Link>
+                                  <Link to={`/post/${postitem.slug}`} className="btn btn-primary">View</Link>
+                                  <Link to={`/postedit/${postitem.slug}`} className="btn btn-warning">Edit</Link>
                               </div>
                       </div>
 
@@ -31,5 +32,3 @@ const Postitem = (props) => {
 export default Postitem;
 
 
-//key={index}
-//                            dangerouslySetInnerHTML={{__html:postitem.content}}
