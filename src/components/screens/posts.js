@@ -15,7 +15,6 @@ class Posts extends Component {
         }).catch(err => console.log(err));
     }
 
-
     render() {
 
         const head = {
@@ -34,7 +33,8 @@ class Posts extends Component {
 
                     </div>
                     <div className="row">
-                        <Postitem postitem={post}/>
+                            <Postitem postitem={post}/>
+
                     </div>
                 </div>
 

@@ -75,7 +75,7 @@ class Newpost extends Component {
 
             this.props.usecreatePost(this.formData).then(result => {
                 alert(result.post_uuid);
-                this.props.history.push("/posts");
+                this.props.history.push("/posts.php");
             }).catch(err=>{
                 console.log(err)
             });

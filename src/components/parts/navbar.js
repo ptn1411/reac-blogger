@@ -27,7 +27,7 @@ class Navbar extends Component {
                                 <NavLink className="nav-link"  to="/newpost">New Post</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink className="nav-link"  to="/posts">Posts</NavLink>
+                                <NavLink className="nav-link"  to="/posts.php">Posts</NavLink>
                             </li>
                         </ul>
                     </div>

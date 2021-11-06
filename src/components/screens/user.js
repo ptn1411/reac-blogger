@@ -37,23 +37,29 @@ class User extends Component {
         this.userData = new FormData();
         this.getUser(this.props.match.params.uuid);
         this.setState({loading: true});
+
     }
 
     async getUser(uuid) {
         let res = await Crud.getUserUuid(uuid);
-        this.setState({
-            uuid: res.data.data.uuid,
-            username: res.data.data.username,
-            firstName: res.data.data.firstName,
-            lastName: res.data.data.lastName,
-            email: res.data.data.email,
-            address: res.data.data.address,
-            gender: res.data.data.gender,
-            roleid: res.data.data.roleid,
-            createdAt: res.data.data.createdAt,
-            updatedAt: res.data.data.updatedAt,
-            loading: false
-        });
+        if(res.data.data){
+            this.setState({
+                uuid: res.data.data.uuid,
+                username: res.data.data.username,
+                firstName: res.data.data.firstName,
+                lastName: res.data.data.lastName,
+                email: res.data.data.email,
+                address: res.data.data.address,
+                gender: res.data.data.gender,
+                roleid: res.data.data.roleid,
+                createdAt: res.data.data.createdAt,
+                updatedAt: res.data.data.updatedAt,
+                loading: false
+            });
+        }else {
+            this.props.history.push("/notfound.php");
+        }
+
     }
 
     onChangeForm = name => event => {

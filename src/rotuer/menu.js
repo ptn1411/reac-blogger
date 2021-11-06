@@ -10,6 +10,7 @@ import Newpost from "../components/screens/newpost";
 import Posts from "../components/screens/posts";
 import Postuuid from "../components/screens/postuuid";
 import editPost from "../components/screens/editpost";
+import Notfound from "../components/screens/notfound";
 class Menu extends Component {
     render() {
         return (
@@ -22,9 +23,12 @@ class Menu extends Component {
                     <Route exact  path="/user/:uuid" component={User}/>
 
                     <Route exact  path="/newpost" component={Newpost}/>
-                    <Route exact  path="/posts" component={Posts}/>
+                    <Route exact  path="/posts.php" component={Posts}/>
                     <Route exact  path="/post/:uuid" component={Postuuid}/>
                     <Route exact  path="/postedit/:uuid" component={editPost}/>
+
+                    <Route exact  path="/notfound.php" component={Notfound}/>
+                    <Route exact  path="*" component={Notfound}/>
                 </Switch>
                 <Footer/>
             </Router>

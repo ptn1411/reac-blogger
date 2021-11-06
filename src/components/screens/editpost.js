@@ -31,11 +31,9 @@ class Editpost extends Component {
 
     componentDidMount() {
         this.formData = new FormData();
-
         const {post} = this.props;
-        if (post.length === 0) {
-            this.getPostUuid(this.props.match.params.uuid);
-        } else {
+        if (post.length > 0) {
+
             for (let i = 0; i < post.length; i++) {
                 if (post[i].slug === this.props.match.params.uuid) {
                     this.setState({
@@ -50,10 +48,11 @@ class Editpost extends Component {
                         post_uuid: post[i].post_uuid,
                     });
                     break;
-                } else {
-                    this.getPostUuid(this.props.match.params.uuid);
                 }
             }
+        } else {
+
+            this.getPostUuid(this.props.match.params.uuid);
         }
         const {
             title,
@@ -136,9 +135,8 @@ class Editpost extends Component {
 
         const {post_uuid} = this.state;
         this.props.userDelete(post_uuid).then(result=>{
-            console.log(result);
             alert("thanh cong");
-            this.props.history.push("/posts");
+            this.props.history.push("/posts.php");
         }).catch(err => {
             console.log(err);
             alert("that bai")
@@ -153,7 +151,7 @@ class Editpost extends Component {
         const {post_uuid} = this.state;
 
         this.props.usePostEdit(post_uuid, this.formData).then((result) => {
-            console.log(result)
+            this.props.history.push("/posts.php");
         })
     }
 

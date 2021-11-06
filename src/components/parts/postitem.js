@@ -3,30 +3,41 @@ import React from "react";
 import {Link} from "react-router-dom";
 import moment from 'moment';
 import avatar from "../../assets/avatar.png";
+import "./css.css"
 const Postitem = (props) => {
-    const {postitem}=props;
-  return(
-      <div className="card-deck mb-5">
-          {
-              postitem ? postitem.map((postitem,index) => (
-                      <div className="card" key={index}>
-                          {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                          <img className="card-img-top" src={avatar} alt="Card image cap"/>
-                              <div className="card-body">
-                                  <h5 className="card-title">{postitem.title}</h5>
-                                  <p className="card-text">{postitem.summary}</p>
-                                  <p className="card-text"><small className="text-muted">{moment(postitem.createdAt).format("DD/MM/YYYY")}</small></p>
-                                  <Link to={`/post/${postitem.slug}`} className="btn btn-primary">View</Link>
-                                  <Link to={`/postedit/${postitem.slug}`} className="btn btn-warning">Edit</Link>
-                              </div>
-                      </div>
+    const {postitem} = props;
 
-              )) :(
-                  <Loading/>
-              )
-          }
-      </div>
-  )
+    return (
+        <>
+            {
+                postitem ? postitem.map((postitem, index) => (
+
+                    <div className="card img-wrapper" key={index} style={{width: "25%"}}>
+                        {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+
+                        <img className="card-img-top hover-zoom"
+                             src={`${process.env.REACT_APP_API_URL}/post/photo.php/${postitem.post_uuid}?${new Date().getTime()}`}
+                             onError={i => (i.target.src = `${avatar}`)}
+                             alt={postitem.title}/>
+                        <div className="card-body">
+
+                            <h5 className="card-title"> <Link to={`/post/${postitem.slug}`} className="link">
+                                {postitem.title}
+                            </Link></h5>
+                            <p className="card-text">{postitem.summary}</p>
+                            <p className="card-text"><small
+                                className="text-muted">{moment(postitem.createdAt).format("DD/MM/YYYY")}</small></p>
+                            <Link to={`/post/${postitem.slug}`} className="btn btn-primary">View</Link>
+                            <Link to={`/postedit/${postitem.slug}`} className="btn btn-warning">Edit</Link>
+                        </div>
+                    </div>
+
+                )) : (
+                    <Loading/>
+                )
+            }
+        </>
+    )
 }
 
 export default Postitem;

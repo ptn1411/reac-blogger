@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import HeadMeta from "../parts/head";
 import Post from "../../services/post.service";
 import moment from "moment";
+import avatar from "../../assets/avatar.png";
 
 class Postuuid extends Component {
     constructor(props) {
@@ -18,21 +19,22 @@ class Postuuid extends Component {
             category_id: '4',
             user_uuid: '',
             createdAt: '',
-            post_uuid:'',
+            post_uuid: '',
+            loading: false
         }
     }
 
     componentDidMount() {
+        this.setState({
+            loading: true
+        })
         const {post} = this.props;
-        if (post.length === 0) {
-            this.getPostUuid(this.props.match.params.uuid);
-        } else {
+        if (post.length > 0) {
             for (let i = 0; i < post.length; i++) {
                 if (post[i].slug === this.props.match.params.uuid) {
                     this.setState({
                         title: post[i].title,
-                        view_number: post.view_number,
-                        image: post[i].image,
+                        view_number: post[i].view_number,
                         summary: post[i].summary,
                         content: post[i].content,
                         category_id: post[i].category_id,
@@ -40,11 +42,17 @@ class Postuuid extends Component {
                         createdAt: post[i].createdAt,
                         post_uuid: post[i].post_uuid
                     });
+                    this.setState({
+                        loading: false
+                    })
                     break;
-                } else {
-                    this.getPostUuid(this.props.match.params.uuid);
                 }
             }
+        }else {
+            this.getPostUuid(this.props.match.params.uuid);
+            this.setState({
+                loading: false
+            });
         }
 
     }
@@ -74,8 +82,10 @@ class Postuuid extends Component {
                     category_id: category_id,
                     user_uuid: user_uuid,
                     createdAt: createdAt,
-                    post_uuid:post_uuid
+                    post_uuid: post_uuid
                 });
+            }else {
+                this.props.history.push("/notfound.php");
             }
 
         }).catch(err => console.log(err))
@@ -88,6 +98,7 @@ class Postuuid extends Component {
                 content,
                 category_id,
                 user_uuid,
+                post_uuid,
                 createdAt) => {
         return (
             <div className="col">
@@ -95,6 +106,10 @@ class Postuuid extends Component {
                     <h1>{title}</h1>
                     <p>{summary}</p>
                     <span>{view_number}</span>
+                    <img className="hover-zoom" style={{width: "30%"}}
+                         src={`${process.env.REACT_APP_API_URL}/post/photo.php/${post_uuid}?${new Date().getTime()}`}
+                         onError={i => (i.target.src = `${avatar}`)}
+                         alt={title}/>
                     <div dangerouslySetInnerHTML={{__html: content}}>
                     </div>
 
@@ -113,12 +128,7 @@ class Postuuid extends Component {
 
     render() {
 
-        const head = {
-            title: 'Post',
-            description: 'Nam dep trai',
-            keywords: 'Nam dep trai,react',
-            robots: 'noindex,nofollow',
-        };
+
 
         const {
             title,
@@ -128,8 +138,16 @@ class Postuuid extends Component {
             content,
             category_id,
             user_uuid,
-            createdAt
+            createdAt,
+            post_uuid
         } = this.state;
+
+        const head = {
+            title: `${title} | Post`,
+            description: 'Nam dep trai',
+            keywords: 'Nam dep trai,react',
+            robots: 'noindex,nofollow',
+        };
         return (
             <>
                 <HeadMeta head={head}/>
@@ -142,7 +160,9 @@ class Postuuid extends Component {
                             content,
                             category_id,
                             user_uuid,
-                            createdAt)}
+                            post_uuid,
+                            createdAt,
+                        )}
                     </div>
 
                 </div>
