@@ -17,12 +17,35 @@ class Postuuid extends Component {
             content: '',
             category_id: '4',
             user_uuid: '',
-            createdAt: ''
+            createdAt: '',
+            post_uuid:'',
         }
     }
 
     componentDidMount() {
-        this.getPostUuid(this.props.match.params.uuid);
+        const {post} = this.props;
+        if (post.length === 0) {
+            this.getPostUuid(this.props.match.params.uuid);
+        } else {
+            for (let i = 0; i < post.length; i++) {
+                if (post[i].slug === this.props.match.params.uuid) {
+                    this.setState({
+                        title: post[i].title,
+                        view_number: post.view_number,
+                        image: post[i].image,
+                        summary: post[i].summary,
+                        content: post[i].content,
+                        category_id: post[i].category_id,
+                        user_uuid: post[i].user_uuid,
+                        createdAt: post[i].createdAt,
+                        post_uuid: post[i].post_uuid
+                    });
+                    break;
+                } else {
+                    this.getPostUuid(this.props.match.params.uuid);
+                }
+            }
+        }
 
     }
 
@@ -39,7 +62,8 @@ class Postuuid extends Component {
                     content,
                     category_id,
                     user_uuid,
-                    createdAt
+                    createdAt,
+                    post_uuid
                 } = result.data.data;
                 this.setState({
                     title: title,
@@ -49,7 +73,8 @@ class Postuuid extends Component {
                     content: content,
                     category_id: category_id,
                     user_uuid: user_uuid,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    post_uuid:post_uuid
                 });
             }
 

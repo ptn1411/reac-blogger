@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import Post from "../../services/post.service";
 import HeadMeta from "../parts/head";
 import Postform from "../parts/postform";
 import TinyEditorComponent from "../parts/TinyEditorComponent";
+import {usePostEdit,userDelete} from "../../actions/post";
 
 class Editpost extends Component {
     constructor(props) {
@@ -11,6 +13,7 @@ class Editpost extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeForm = this.onChangeForm.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
 
         this.state = {
             title: '',
@@ -20,14 +23,50 @@ class Editpost extends Component {
             content: '',
             category_id: '4',
             user_uuid: '',
-            createdAt: ''
+            createdAt: '',
+            post_uuid: '',
+            loading: false
         }
     }
 
     componentDidMount() {
         this.formData = new FormData();
-        this.getPostUuid(this.props.match.params.uuid);
 
+        const {post} = this.props;
+        if (post.length === 0) {
+            this.getPostUuid(this.props.match.params.uuid);
+        } else {
+            for (let i = 0; i < post.length; i++) {
+                if (post[i].slug === this.props.match.params.uuid) {
+                    this.setState({
+                        title: post[i].title,
+                        view_number: post.view_number,
+                        image: post[i].image,
+                        summary: post[i].summary,
+                        content: post[i].content,
+                        category_id: post[i].category_id,
+                        user_uuid: post[i].user_uuid,
+                        createdAt: post[i].createdAt,
+                        post_uuid: post[i].post_uuid,
+                    });
+                    break;
+                } else {
+                    this.getPostUuid(this.props.match.params.uuid);
+                }
+            }
+        }
+        const {
+            title,
+            view_number,
+            summary,
+            content,
+            category_id,
+        } = this.state;
+        this.formData.set('title', title);
+        this.formData.set('view_number', view_number);
+        this.formData.set('summary', summary);
+        this.formData.set('content', content);
+        this.formData.set('category_id', category_id);
     }
 
 
@@ -43,7 +82,8 @@ class Editpost extends Component {
                     content,
                     category_id,
                     user_uuid,
-                    createdAt
+                    createdAt,
+                    post_uuid
                 } = result.data.data;
                 this.setState({
                     title: title,
@@ -53,8 +93,16 @@ class Editpost extends Component {
                     content: content,
                     category_id: category_id,
                     user_uuid: user_uuid,
-                    createdAt: createdAt
+                    createdAt: createdAt,
+                    post_uuid: post_uuid
                 });
+
+                this.formData.set('title', title);
+                this.formData.set('view_number', view_number);
+                this.formData.set('summary', summary);
+                this.formData.set('content', content);
+                this.formData.set('category_id', category_id);
+
             }
 
         }).catch(err => console.log(err))
@@ -62,7 +110,9 @@ class Editpost extends Component {
 
     handleChange(event) {
         this.setState({content: event});
+        this.formData.set("content", event);
     }
+
     onChangeForm = name => event => {
         this.setState({error: ""});
         const value = name === "image" ? event.target.files[0] : event.target.value;
@@ -78,12 +128,38 @@ class Editpost extends Component {
         //     [name]: value
         // });
     }
-    handleSubmit(){
+
+    handleDelete() {
+        this.setState({
+            loading: true
+        });
+
+        const {post_uuid} = this.state;
+        this.props.userDelete(post_uuid).then(result=>{
+            console.log(result);
+            alert("thanh cong");
+            this.props.history.push("/posts");
+        }).catch(err => {
+            console.log(err);
+            alert("that bai")
+        })
 
     }
+
+    handleSubmit() {
+        this.setState({
+            loading: true
+        });
+        const {post_uuid} = this.state;
+
+        this.props.usePostEdit(post_uuid, this.formData).then((result) => {
+            console.log(result)
+        })
+    }
+
     formPost = (content) => (
         <div className="mt-5 mb-5">
-            <Postform value={this.state} onChange={(event)=>this.onChangeForm(event)}/>
+            <Postform value={this.state} onChange={(event) => this.onChangeForm(event)}/>
             <div className="form-group">
                 <TinyEditorComponent value={content} onChange={this.handleChange}/>
             </div>
@@ -91,9 +167,13 @@ class Editpost extends Component {
                 <button onClick={this.handleSubmit} className="btn btn-primary">
                     Submit
                 </button>
+                <button onClick={this.handleDelete} className="btn btn-danger">
+                   Delete
+                </button>
             </div>
         </div>
     )
+
     render() {
 
         const head = {
@@ -118,4 +198,11 @@ class Editpost extends Component {
     }
 }
 
-export default Editpost;
+const mapStateToProps = (state) => {
+    return {
+        post: state.post,
+    };
+};
+export default connect(mapStateToProps, {
+    usePostEdit,userDelete
+})(Editpost);

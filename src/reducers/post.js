@@ -17,7 +17,7 @@ function postReducer(post = initialState, action) {
             return [...post,payload];
         case EDIT_POST:
             return post.map((post) => {
-                if (post.uuid === payload.uuid) {
+                if (post.post_uuid === payload.post_uuid) {
                     return {
                         ...post,
                         ...payload,
@@ -27,7 +27,7 @@ function postReducer(post = initialState, action) {
                 }
             });
         case DELETE_POST:
-            return post.filter(({ uuid }) => uuid !== payload.uuid);
+            return post.filter(({ uuid }) => uuid !== payload.post_uuid);
         default:
             return post;
     }

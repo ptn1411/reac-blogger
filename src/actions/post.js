@@ -2,12 +2,12 @@ import {
     POST_ALL,
     DELETE_POST,
     CREATE_POST,
-    EDIT_POST
+    EDIT_POST,
 } from "./types";
 import Post from "../services/post.service";
 
 
-export const createPostData = (data) => async (dispatch) => {
+export const usecreatePost = (data) => async (dispatch) => {
     try {
         const res = await Post.createPost(data);
         dispatch({
@@ -19,7 +19,7 @@ export const createPostData = (data) => async (dispatch) => {
         return Promise.reject(err);
     }
 }
-export const getPostData = () => async (dispatch) => {
+export const useGetPostAll = () => async (dispatch) => {
     try {
         const res = await Post.getAll();
         dispatch({
@@ -31,3 +31,27 @@ export const getPostData = () => async (dispatch) => {
         return Promise.reject(err);
     }
 }
+export const usePostEdit = (uuid,data) => async (dispatch) => {
+    try {
+        const res = await Post.editPost(uuid,data);
+        dispatch({
+            type: EDIT_POST,
+            payload: res.data.data,
+        });
+        return Promise.resolve(res.data.data);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+}
+export const userDelete = (uuid) => async (dispatch) => {
+    try {
+        const res = await Post.deletePost(uuid);
+        dispatch({
+            type: DELETE_POST,
+            payload: res.data.data,
+        });
+        return Promise.resolve(res.data.data);
+    } catch (err) {
+        return Promise.reject(err);
+    }
+};

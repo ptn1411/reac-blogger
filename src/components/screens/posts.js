@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import HeadMeta from "../parts/head";
 import {connect} from "react-redux";
-import {getPostData} from "../../actions/post";
+import {useGetPostAll} from "../../actions/post";
 import Postitem from "../parts/postitem";
 
 class Posts extends Component {
@@ -11,7 +11,7 @@ class Posts extends Component {
     }
 
     componentDidMount() {
-        this.props.getPostData().then(results => {
+        this.props.useGetPostAll().then(results => {
         }).catch(err => console.log(err));
     }
 
@@ -49,5 +49,5 @@ const mapStateToProps = (state) => {
     };
 };
 export default connect(mapStateToProps, {
-    getPostData
+    useGetPostAll
 })(Posts);

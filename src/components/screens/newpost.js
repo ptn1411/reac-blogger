@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import HeadMeta from "../parts/head";
 import TinyEditorComponent from "../parts/TinyEditorComponent";
 import {isAuthenticated} from "../../auth";
-import {createPostData} from "../../actions/post";
+import {usecreatePost} from "../../actions/post";
 
 class Newpost extends Component {
 
@@ -33,6 +33,7 @@ class Newpost extends Component {
 
     handleChange(event) {
         this.setState({content: event});
+        this.formData.set("content",event);
     }
 
     onChangeForm = name => event => {
@@ -72,8 +73,9 @@ class Newpost extends Component {
             this.formData.set('category_id', category_id);
             this.formData.set('user_uuid', user_uuid);
 
-            this.props.createPostData(this.formData).then(result => {
+            this.props.usecreatePost(this.formData).then(result => {
                 alert(result.post_uuid);
+                this.props.history.push("/posts");
             }).catch(err=>{
                 console.log(err)
             });
@@ -163,5 +165,5 @@ const mapStateToProps = (state) => {
     };
 };
 export default connect(mapStateToProps, {
-    createPostData
+    usecreatePost
 })(Newpost);
