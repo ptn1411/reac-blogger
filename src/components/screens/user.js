@@ -7,6 +7,7 @@ import {userDelete, userEdit} from "../../actions/user";
 import moment from 'moment';
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
+import {isAuthenticated} from "../../auth";
 
 class User extends Component {
 
@@ -16,6 +17,7 @@ class User extends Component {
         this.editSubmit = this.editSubmit.bind(this);
         this.deleteUser = this.deleteUser.bind(this);
         this.onChangeForm = this.onChangeForm.bind(this);
+        this.checkUser = this.checkUser.bind(this);
         this.state = {
             uuid: "",
             username: "",
@@ -28,7 +30,8 @@ class User extends Component {
             createdAt: "",
             updatedAt: "",
             redirect: false,
-            loading: false
+            loading: false,
+            isDisabled: true,
         }
 
     }
@@ -42,7 +45,7 @@ class User extends Component {
 
     async getUser(uuid) {
         let res = await Crud.getUserUuid(uuid);
-        if(res.data.data){
+        if (res.data.data) {
             this.setState({
                 uuid: res.data.data.uuid,
                 username: res.data.data.username,
@@ -56,10 +59,23 @@ class User extends Component {
                 updatedAt: res.data.data.updatedAt,
                 loading: false
             });
-        }else {
+            this.checkUser(res.data.data.uuid);
+        } else {
             this.props.history.push("/notfound.php");
         }
 
+    }
+
+    checkUser(user_uuid) {
+        if (isAuthenticated() && isAuthenticated().user.uuid === user_uuid) {
+            this.setState({
+                isDisabled:false
+            })
+        } else if (isAuthenticated() && isAuthenticated().user.roleid === "1") {
+            this.setState({
+                isDisabled:false
+            })
+        }
     }
 
     onChangeForm = name => event => {
@@ -106,7 +122,7 @@ class User extends Component {
         })
     }
 
-    userForm = (username, firstName, lastName, email, address, gender, date) => (
+    userForm = (uuid, username, firstName, lastName, email, address, gender, date, isDisabled) => (
         <div className="col-6 mt-5 mb-5">
             <div className="form-group">
                 <label>Username</label>
@@ -114,6 +130,7 @@ class User extends Component {
                        placeholder="Username"
                        value={username}
                        onChange={this.onChangeForm("username")}
+                       disabled={isDisabled}
                 />
 
             </div>
@@ -123,6 +140,7 @@ class User extends Component {
                        placeholder="First Name"
                        value={firstName}
                        onChange={this.onChangeForm("firstName")}
+                       disabled={isDisabled}
                 />
 
             </div>
@@ -132,6 +150,7 @@ class User extends Component {
                        placeholder="Last Name"
                        value={lastName}
                        onChange={this.onChangeForm("lastName")}
+                       disabled={isDisabled}
                 />
 
             </div>
@@ -141,13 +160,16 @@ class User extends Component {
                        placeholder="Email"
                        value={email}
                        onChange={this.onChangeForm("email")}
+                       disabled={isDisabled}
 
                 />
             </div>
             <div className="form-group">
                 <label htmlFor="inputState">Sex</label>
                 <select id="inputState" className="form-control" value={gender}
-                        onChange={this.onChangeForm("gender")}>
+                        onChange={this.onChangeForm("gender")}
+                        disabled={isDisabled}
+                >
                     <option value="0">Men</option>
                     <option value="2">Female</option>
 
@@ -159,6 +181,7 @@ class User extends Component {
                        placeholder="Address"
                        value={address}
                        onChange={this.onChangeForm("address")}
+                       disabled={isDisabled}
                 />
 
             </div>
@@ -168,8 +191,20 @@ class User extends Component {
                 <p>{date}</p>
             </div>
 
-            <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
-            <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
+            { isAuthenticated() && isAuthenticated().user.uuid === uuid &&  isAuthenticated().user.roleid !== "1" &&(
+                <>
+                    <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
+                    <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
+                </>
+            )}
+
+            {isAuthenticated() && isAuthenticated().user.roleid === "1" && (
+                <>
+                    <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
+                    <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
+                </>
+            )}
+
 
         </div>
     )
@@ -183,7 +218,18 @@ class User extends Component {
             robots: 'noindex,nofollow'
         }
 
-        const {username, firstName, lastName, email, address, gender, createdAt, loading} = this.state;
+        const {
+            uuid,
+            username,
+            firstName,
+            lastName,
+            email,
+            address,
+            gender,
+            createdAt,
+            loading,
+            isDisabled
+        } = this.state;
         const date = moment(createdAt).format("DD/MM/YYYY");
         if (this.state.redirect) {
             return <Redirect to="/"/>;
@@ -194,7 +240,7 @@ class User extends Component {
                 <div className="container">
                     {loading ? (<Loading/>) : ("")}
                     <div className="row">
-                        {loading ? ("") : (this.userForm(username, firstName, lastName, email, address, gender, date))}
+                        {loading ? ("") : (this.userForm(uuid, username, firstName, lastName, email, address, gender, date, isDisabled))}
                     </div>
 
                 </div>

@@ -84,10 +84,15 @@ class Newpost extends Component {
     }
 
     initUser() {
-        const user_uuid = isAuthenticated().user.uuid;
-        this.setState({
-            user_uuid: user_uuid
-        });
+        if(isAuthenticated() ){
+            const user_uuid = isAuthenticated().user.uuid;
+            this.setState({
+                user_uuid: user_uuid
+            });
+        }else {
+            this.props.history.push("/login");
+        }
+
     }
 
     formPost = (title, content, summary, category_id) => (

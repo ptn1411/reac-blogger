@@ -4,7 +4,9 @@ import Post from "../../services/post.service";
 import HeadMeta from "../parts/head";
 import Postform from "../parts/postform";
 import TinyEditorComponent from "../parts/TinyEditorComponent";
-import {usePostEdit,userDelete} from "../../actions/post";
+import {usePostEdit, userDelete} from "../../actions/post";
+import avatar from "../../assets/avatar.png";
+import {isAuthenticated} from "../../auth";
 
 class Editpost extends Component {
     constructor(props) {
@@ -14,6 +16,7 @@ class Editpost extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChangeForm = this.onChangeForm.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.checkUser = this.checkUser.bind(this);
 
         this.state = {
             title: '',
@@ -31,6 +34,7 @@ class Editpost extends Component {
 
     componentDidMount() {
         this.formData = new FormData();
+
         const {post} = this.props;
         if (post.length > 0) {
 
@@ -46,7 +50,9 @@ class Editpost extends Component {
                         user_uuid: post[i].user_uuid,
                         createdAt: post[i].createdAt,
                         post_uuid: post[i].post_uuid,
+
                     });
+                    this.checkUser(post[i].user_uuid)
                     break;
                 }
             }
@@ -95,7 +101,7 @@ class Editpost extends Component {
                     createdAt: createdAt,
                     post_uuid: post_uuid
                 });
-
+                this.checkUser(user_uuid);
                 this.formData.set('title', title);
                 this.formData.set('view_number', view_number);
                 this.formData.set('summary', summary);
@@ -105,6 +111,16 @@ class Editpost extends Component {
             }
 
         }).catch(err => console.log(err))
+    }
+
+    checkUser(user_uuid) {
+        if (isAuthenticated() && isAuthenticated().user.uuid === user_uuid) {
+            console.log("editPost")
+        } else if (isAuthenticated() && isAuthenticated().user.roleid === "1") {
+            console.log("editPost")
+        } else {
+            this.props.history.push("/posts.php");
+        }
     }
 
     handleChange(event) {
@@ -134,7 +150,7 @@ class Editpost extends Component {
         });
 
         const {post_uuid} = this.state;
-        this.props.userDelete(post_uuid).then(result=>{
+        this.props.userDelete(post_uuid).then(result => {
             alert("thanh cong");
             this.props.history.push("/posts.php");
         }).catch(err => {
@@ -155,8 +171,13 @@ class Editpost extends Component {
         })
     }
 
-    formPost = (content) => (
+    formPost = (content, post_uuid, title) => (
         <div className="mt-5 mb-5">
+            <img className="hover-zoom"
+                 style={{width: "30%"}}
+                 src={`${process.env.REACT_APP_API_URL}/api/post/photo.php/${post_uuid}?${new Date().getTime()}`}
+                 onError={i => (i.target.src = `${avatar}`)}
+                 alt={title}/>
             <Postform value={this.state} onChange={(event) => this.onChangeForm(event)}/>
             <div className="form-group">
                 <TinyEditorComponent value={content} onChange={this.handleChange}/>
@@ -166,7 +187,7 @@ class Editpost extends Component {
                     Submit
                 </button>
                 <button onClick={this.handleDelete} className="btn btn-danger">
-                   Delete
+                    Delete
                 </button>
             </div>
         </div>
@@ -180,14 +201,14 @@ class Editpost extends Component {
             keywords: 'Nam dep trai,react',
             robots: 'noindex,nofollow',
         };
-
+        const {content, post_uuid, title} = this.state;
         return (
             <>
                 <HeadMeta head={head}/>
                 <div className="container ">
                     <h1 className="text-center">Edit Post</h1>
                     <div className="row">
-                        {this.formPost(this.state.content)}
+                        {this.formPost(content, post_uuid, title)}
                     </div>
 
                 </div>
@@ -202,5 +223,5 @@ const mapStateToProps = (state) => {
     };
 };
 export default connect(mapStateToProps, {
-    usePostEdit,userDelete
+    usePostEdit, userDelete
 })(Editpost);

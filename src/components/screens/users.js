@@ -5,7 +5,7 @@ import {getAllUser} from "../../actions/user";
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
 
-class Home extends Component {
+class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,19 +14,23 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.getAllUser().then(res => {
+        const {user} = this.props;
+        if (user.length > 0) {
             this.setState({loading: false});
-        }).catch(err => {
-            console.log(err);
-        })
-
+        }else {
+            this.props.getAllUser().then(res => {
+                this.setState({loading: false});
+            }).catch(err => {
+                console.log(err);
+            })
+        }
     }
 
 
     render() {
 
         const head = {
-            title: 'Home',
+            title: 'Users',
             description: 'Nam dep trai',
             keywords: 'Nam dep trai,react',
             robots: 'noindex,nofollow'
@@ -57,4 +61,4 @@ const mapStateToProps = (state) => {
 };
 export default connect(mapStateToProps, {
     getAllUser
-})(Home);
+})(Users);

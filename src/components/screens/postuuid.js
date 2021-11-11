@@ -44,7 +44,8 @@ class Postuuid extends Component {
                     });
                     this.setState({
                         loading: false
-                    })
+                    });
+                    Post.viewNumber(post[i].post_uuid);
                     break;
                 }
             }
@@ -84,6 +85,7 @@ class Postuuid extends Component {
                     createdAt: createdAt,
                     post_uuid: post_uuid
                 });
+                Post.viewNumber(post_uuid);
             }else {
                 this.props.history.push("/notfound.php");
             }
@@ -105,9 +107,9 @@ class Postuuid extends Component {
                 <div className="mt-5 mb-5">
                     <h1>{title}</h1>
                     <p>{summary}</p>
-                    <span>{view_number}</span>
+                    <span>{view_number} lượt xem</span>
                     <img className="hover-zoom" style={{width: "30%"}}
-                         src={`${process.env.REACT_APP_API_URL}/post/photo.php/${post_uuid}?${new Date().getTime()}`}
+                         src={`${process.env.REACT_APP_API_URL}/api/post/photo.php/${post_uuid}?${new Date().getTime()}`}
                          onError={i => (i.target.src = `${avatar}`)}
                          alt={title}/>
                     <div dangerouslySetInnerHTML={{__html: content}}>

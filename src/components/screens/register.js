@@ -4,6 +4,7 @@ import {userRegister} from "../../actions/user";
 import {Redirect} from "react-router-dom";
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
+import {isAuthenticated} from "../../auth";
 
 class Register extends Component {
 
@@ -20,10 +21,21 @@ class Register extends Component {
             address: '',
             gender: '0',
             redirect: false,
-            loading: false
+            loading: false,
+            login: false
         }
     }
-
+    componentDidMount() {
+        if(isAuthenticated()){
+            this.setState({
+                login: true
+            });
+        }else {
+            this.setState({
+                login: false
+            });
+        }
+    }
 
     onChangeForm = name => event => {
         const value = event.target.value;
@@ -133,7 +145,10 @@ class Register extends Component {
         if (this.state.redirect) {
             return <Redirect to="/"/>;
         }
-        const {firstName, lastName, password, username, email, address, gender} = this.state;
+        const {firstName, lastName, password, username, email, address, gender,login} = this.state;
+        if (login) {
+            return <Redirect to='/'/>
+        }
         return (
             <>
                 <HeadMeta head={head}/>

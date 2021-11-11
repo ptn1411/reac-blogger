@@ -1,6 +1,6 @@
 import Auth from "../services/auth.service";
 
-export const LoginData = async (data) => {
+export const loginData = async (data) => {
     try {
         const results = await Auth.postLogin(data);
         return Promise.resolve(results);
@@ -10,6 +10,16 @@ export const LoginData = async (data) => {
 
 }
 
+
+export const logoutData = next => {
+    if (typeof window !== 'undefined') localStorage.removeItem('jwt');
+    next();
+    Auth.getLogout()
+        .then(response => {
+            return response;
+        })
+        .catch(err => console.log(err));
+}
 export const authenticate = (jwt, next) => {
     if (typeof window !== 'undefined') {
         localStorage.setItem('jwt', JSON.stringify(jwt));

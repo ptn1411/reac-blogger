@@ -8,12 +8,19 @@ class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {}
+
     }
 
     componentDidMount() {
-        this.props.useGetPostAll().then(results => {
-        }).catch(err => console.log(err));
+        const {post} = this.props;
+        if (post.length > 0) {
+            console.log("Posts")
+        } else {
+            this.props.useGetPostAll().then(results => {
+            }).catch(err => console.log(err));
+        }
     }
+
 
     render() {
 
@@ -24,6 +31,7 @@ class Posts extends Component {
             robots: 'noindex,nofollow',
         };
         const {post} = this.props;
+
         return (
             <>
                 <HeadMeta head={head}/>
@@ -33,7 +41,7 @@ class Posts extends Component {
 
                     </div>
                     <div className="row">
-                            <Postitem postitem={post}/>
+                        <Postitem postitem={post}/>
 
                     </div>
                 </div>

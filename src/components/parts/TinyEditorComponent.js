@@ -44,6 +44,7 @@ import 'tinymce/plugins/colorpicker';
 import 'tinymce/plugins/contextmenu';
 import 'tinymce/plugins/fullpage';
 import 'tinymce/plugins/directionality';
+import 'tinymce/plugins/code'
 
 
 const TinyEditorComponent = (props) => {
@@ -60,7 +61,7 @@ const TinyEditorComponent = (props) => {
                     menubar: 'file edit view insert format tools table help',
                     file_picker_types: 'image',
                     plugins: [
-                        'print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help'
+                        'code print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount imagetools contextmenu colorpicker textpattern help'
                     ],
 
                     image_title: true,
