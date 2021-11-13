@@ -11,11 +11,11 @@ const Card = (props) => {
             return (
                 <div key={i} className="card" style={{width: "25%"}}>
                     {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                    <img className="card-img-top" src={avatar} onError={i=>(i.target.src=`${avatar}`)} alt="Card image cap"/>
+                    <img className="card-img-top" src={`${process.env.REACT_APP_API_URL}/api/user/photo.php/${user.uuid}?${new Date().getTime()}`} onError={i=>(i.target.src=`${avatar}`)} alt="Card image cap"/>
                     <div className="card-body">
                         <h5 className="card-title">{user.firstName}</h5>
                         <p className="card-text">{user.email}</p>
-                        <Link to={`/user/${user.uuid}`} className="btn btn-primary">View user</Link>
+                        <Link to={`/user.php/${user.uuid}`} className="btn btn-primary">View user</Link>
                     </div>
                 </div>
             )
@@ -27,3 +27,4 @@ const Card = (props) => {
     )
 }
 export default Card;
+

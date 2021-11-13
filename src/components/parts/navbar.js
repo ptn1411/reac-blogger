@@ -30,10 +30,10 @@ class Navbar extends Component {
                                 <NavLink className="nav-link" to="/">Home </NavLink>
                             </li>
 
-                            {isAuthenticated() && isAuthenticated().user.roleid === '1' && (
+                            {isAuthenticated() && isAuthenticated().user.roleid === '9' && (
                                 <li className="nav-item">
-                                    <NavLink to="/admin"  className="nav-link">
-                                        Admin
+                                    <NavLink to="/dashboard"  className="nav-link">
+                                        Dashboard
                                     </NavLink>
                                 </li>
                             )}
@@ -44,7 +44,7 @@ class Navbar extends Component {
                                 isAuthenticated() && (
                                     <Fragment>
                                         <li className="nav-item">
-                                            <NavLink className="nav-link" to="/newpost">New Post</NavLink>
+                                            <NavLink className="nav-link" to="/newpost.php">New Post</NavLink>
                                         </li>
                                         <li className="nav-item">
                                             <span className="nav-link" onClick={this.onClickLogout}>Logout</span>
@@ -56,10 +56,10 @@ class Navbar extends Component {
                                 !isAuthenticated() && (
                                     <Fragment>
                                         <li className="nav-item">
-                                            <NavLink className="nav-link" to="/login">Login</NavLink>
+                                            <NavLink className="nav-link" to="/login.php">Login</NavLink>
                                         </li>
                                         <li className="nav-item">
-                                            <NavLink className="nav-link" to="/register">Register</NavLink>
+                                            <NavLink className="nav-link" to="/register.php">Register</NavLink>
                                         </li>
                                     </Fragment>
                                 )

@@ -22,21 +22,21 @@ const Postitem = (props) => {
                              alt={postitem.title}/>
                         <div className="card-body">
 
-                            <h5 className="card-title"> <Link to={`/post/${postitem.slug}`} className="link">
+                            <h5 className="card-title"> <Link to={`/post.php/${postitem.slug}`} className="link">
                                 {postitem.title}
                             </Link></h5>
                             <p className="card-text">{postitem.summary}</p>
                             <p>{postitem.view_number} lượt xem</p>
                             <p className="card-text"><small
                                 className="text-muted">{moment(postitem.createdAt).format("DD/MM/YYYY")}</small></p>
-                            <Link to={`/post/${postitem.slug}`} className="btn btn-primary">View</Link>
+                            <Link to={`/post.php/${postitem.slug}`} className="btn btn-primary">View</Link>
 
-                            {isAuthenticated() && isAuthenticated().user.uuid === postitem.user_uuid && (
-                                <Link to={`/postedit/${postitem.slug}`} className="btn btn-warning">Edit</Link>
+                            {isAuthenticated() && isAuthenticated().user.uuid === postitem.user_uuid && isAuthenticated().user.roleid !== "9" &&(
+                                    <Link to={`/postedit.php/${postitem.slug}`} className="btn btn-warning">Edit</Link>
                             )}
 
-                            { isAuthenticated() && isAuthenticated().user.roleid === "1" && (
-                                <Link to={`/postedit/${postitem.slug}`} className="btn btn-warning">Edit</Link>
+                            { isAuthenticated() && isAuthenticated().user.roleid === "9" && (
+                                <Link to={`/postedit.php/${postitem.slug}`} className="btn btn-warning">Edit</Link>
                             )}
                         </div>
                     </div>

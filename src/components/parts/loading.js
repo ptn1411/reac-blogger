@@ -11,7 +11,6 @@ const Loading =(props) => {
             </div>
             <Link className="btn btn-primary" to="/">Home</Link>
         </div>
-
     )
 }
 export default Loading;

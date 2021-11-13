@@ -8,6 +8,7 @@ import moment from 'moment';
 import Loading from "../parts/loading";
 import HeadMeta from "../parts/head";
 import {isAuthenticated} from "../../auth";
+import avatar from "../../assets/avatar.png";
 
 class User extends Component {
 
@@ -21,6 +22,7 @@ class User extends Component {
         this.state = {
             uuid: "",
             username: "",
+            password:"",
             firstName: "",
             lastName: "",
             email: "",
@@ -38,7 +40,9 @@ class User extends Component {
 
     componentDidMount() {
         this.userData = new FormData();
-        this.getUser(this.props.match.params.uuid);
+        this.getUser(this.props.match.params.uuid).then(() =>{
+
+        } );
         this.setState({loading: true});
 
     }
@@ -59,6 +63,14 @@ class User extends Component {
                 updatedAt: res.data.data.updatedAt,
                 loading: false
             });
+            this.userData.set("username",res.data.data.username);
+            this.userData.set("firstName",res.data.data.firstName);
+            this.userData.set("lastName",res.data.data.lastName);
+            this.userData.set("email",res.data.data.email);
+            this.userData.set("address",res.data.data.address);
+            this.userData.set("gender",res.data.data.gender);
+            this.userData.set("roleid",res.data.data.roleid);
+
             this.checkUser(res.data.data.uuid);
         } else {
             this.props.history.push("/notfound.php");
@@ -71,7 +83,7 @@ class User extends Component {
             this.setState({
                 isDisabled:false
             })
-        } else if (isAuthenticated() && isAuthenticated().user.roleid === "1") {
+        } else if (isAuthenticated() && isAuthenticated().user.roleid === "9") {
             this.setState({
                 isDisabled:false
             })
@@ -79,24 +91,18 @@ class User extends Component {
     }
 
     onChangeForm = name => event => {
-        const value = event.target.value;
-        this.setState({
-            [name]: value
-        });
+        const value = name === "image" ? event.target.files[0] : event.target.value;
+
+        const fileSize = name === "image" ? event.target.files[0].size : 0;
+
         this.userData.set(name, value);
+
+        this.setState({[name]: value, fileSize});
     }
     editSubmit = () => {
         this.setState({loading: true});
-        const {uuid, username, firstName, lastName, email, address, gender} = this.state;
-        let data = {
-            username: username,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            address: address,
-            gender: gender
-        }
-        this.props.userEdit(uuid, data).then((res) => {
+
+        this.props.userEdit(this.state.uuid,this.userData).then((res) => {
             if (res) {
                 this.setState({loading: false});
             } else {
@@ -122,14 +128,38 @@ class User extends Component {
         })
     }
 
-    userForm = (uuid, username, firstName, lastName, email, address, gender, date, isDisabled) => (
+    userForm = (uuid, username, password,firstName, lastName, email, address, gender, date, isDisabled) => (
         <div className="col-6 mt-5 mb-5">
+            <img className="hover-zoom"
+                 style={{width: "30%"}}
+                 src={`${process.env.REACT_APP_API_URL}/api/user/photo.php/${uuid}?${new Date().getTime()}`}
+                 onError={i => (i.target.src = `${avatar}`)}
+                 alt={username}/>
+            <div className="form-group">
+                <label>Image</label>
+                <input
+                    onChange={this.onChangeForm("image")}
+                    type="file"
+                    accept="image/*"
+                    className="form-control"
+                />
+            </div>
             <div className="form-group">
                 <label>Username</label>
                 <input type="text" className="form-control"
                        placeholder="Username"
                        value={username}
                        onChange={this.onChangeForm("username")}
+                       disabled={isDisabled}
+                />
+
+            </div>
+            <div className="form-group">
+                <label>Password</label>
+                <input type="password" className="form-control"
+                       placeholder="Password"
+                       value={password}
+                       onChange={this.onChangeForm("password")}
                        disabled={isDisabled}
                 />
 
@@ -191,14 +221,14 @@ class User extends Component {
                 <p>{date}</p>
             </div>
 
-            { isAuthenticated() && isAuthenticated().user.uuid === uuid &&  isAuthenticated().user.roleid !== "1" &&(
+            { isAuthenticated() && isAuthenticated().user.uuid === uuid &&  isAuthenticated().user.roleid !== "9" &&(
                 <>
                     <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
                     <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
                 </>
             )}
 
-            {isAuthenticated() && isAuthenticated().user.roleid === "1" && (
+            {isAuthenticated() && isAuthenticated().user.roleid === "9" && (
                 <>
                     <button onClick={this.editSubmit} className="btn btn-success m-1">Save</button>
                     <button onClick={this.deleteUser} className="btn btn-danger m-1">Delete</button>
@@ -221,6 +251,7 @@ class User extends Component {
         const {
             uuid,
             username,
+            password,
             firstName,
             lastName,
             email,
@@ -240,7 +271,7 @@ class User extends Component {
                 <div className="container">
                     {loading ? (<Loading/>) : ("")}
                     <div className="row">
-                        {loading ? ("") : (this.userForm(uuid, username, firstName, lastName, email, address, gender, date, isDisabled))}
+                        {loading ? ("") : (this.userForm(uuid, username, password,firstName, lastName, email, address, gender, date, isDisabled))}
                     </div>
 
                 </div>

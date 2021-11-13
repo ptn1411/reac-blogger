@@ -45,11 +45,13 @@ class Postuuid extends Component {
                     this.setState({
                         loading: false
                     });
-                    Post.viewNumber(post[i].post_uuid);
+                    Post.viewNumber(post[i].post_uuid).then(() => {
+
+                    })
                     break;
                 }
             }
-        }else {
+        } else {
             this.getPostUuid(this.props.match.params.uuid);
             this.setState({
                 loading: false
@@ -85,8 +87,10 @@ class Postuuid extends Component {
                     createdAt: createdAt,
                     post_uuid: post_uuid
                 });
-                Post.viewNumber(post_uuid);
-            }else {
+                Post.viewNumber(post_uuid).then(() => {
+
+                })
+            } else {
                 this.props.history.push("/notfound.php");
             }
 
@@ -129,7 +133,6 @@ class Postuuid extends Component {
     }
 
     render() {
-
 
 
         const {

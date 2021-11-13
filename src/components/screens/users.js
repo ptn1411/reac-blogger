@@ -18,7 +18,7 @@ class Users extends Component {
         if (user.length > 0) {
             this.setState({loading: false});
         }else {
-            this.props.getAllUser().then(res => {
+            this.props.getAllUser().then(() => {
                 this.setState({loading: false});
             }).catch(err => {
                 console.log(err);

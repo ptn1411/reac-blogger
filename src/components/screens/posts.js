@@ -1,26 +1,41 @@
 import React, {Component} from 'react';
 import HeadMeta from "../parts/head";
 import {connect} from "react-redux";
-import {useGetPostAll} from "../../actions/post";
+import {usePostPage} from "../../actions/post";
 import Postitem from "../parts/postitem";
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 class Posts extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.fetchMoreData = this.fetchMoreData.bind(this);
+        this.state = {
+            page: 0,
+            size: 4,
+            hasMore: true
+        }
 
     }
 
     componentDidMount() {
         const {post} = this.props;
         if (post.length > 0) {
-            console.log("Posts")
+            console.log("1")
         } else {
-            this.props.useGetPostAll().then(results => {
-            }).catch(err => console.log(err));
+            this.fetchMoreData();
         }
+
     }
 
+    fetchMoreData() {
+        const {page, size} = this.state;
+        this.props.usePostPage(page, size).then(() => {
+            this.setState({
+                page: this.state.page + 1,
+            })
+        }).catch(err => console.log(err));
+
+    }
 
     render() {
 
@@ -31,7 +46,6 @@ class Posts extends Component {
             robots: 'noindex,nofollow',
         };
         const {post} = this.props;
-
         return (
             <>
                 <HeadMeta head={head}/>
@@ -40,10 +54,20 @@ class Posts extends Component {
                         <h1>Post</h1>
 
                     </div>
-                    <div className="row">
-                        <Postitem postitem={post}/>
 
-                    </div>
+                    <InfiniteScroll
+                        dataLength={post.length}
+                        next={this.fetchMoreData}
+                        hasMore={this.state.hasMore}
+                        loader={<h4>Loading...</h4>}
+                        style={{overflow: "none"}}
+                    >
+                        <div className="row">
+                            <Postitem postitem={post}/>
+                        </div>
+                    </InfiniteScroll>
+
+
                 </div>
 
             </>
@@ -57,5 +81,5 @@ const mapStateToProps = (state) => {
     };
 };
 export default connect(mapStateToProps, {
-    useGetPostAll
+    usePostPage
 })(Posts);

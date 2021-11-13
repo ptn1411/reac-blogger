@@ -4,6 +4,9 @@ class Post {
     getAll() {
         return axios.get(`/api/postall`);
     }
+    getPostPage(page , size) {
+        return axios.get(`/api/posts?page=${page}&size=${size}`);
+    }
     getPostUuid(uuid) {
         return axios.get(`/api/post/${uuid}`);
     }
@@ -17,7 +20,7 @@ class Post {
         return axios.delete(`/api/post/${uuid}`);
     }
     viewNumber(uuid) {
-        return axios.get(`/api/post/view/${uuid}`)
+        return axios.get(`/api/post/view/${uuid}`);
     }
 
 }

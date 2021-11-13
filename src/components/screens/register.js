@@ -58,7 +58,7 @@ class Register extends Component {
             address: address,
             gender: gender
         }
-        this.props.userRegister(data).then((res) => {
+        this.props.userRegister(data).then(() => {
             this.setState({
                 redirect: true,
                 loading: false

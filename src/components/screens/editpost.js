@@ -115,9 +115,9 @@ class Editpost extends Component {
 
     checkUser(user_uuid) {
         if (isAuthenticated() && isAuthenticated().user.uuid === user_uuid) {
-            console.log("editPost")
-        } else if (isAuthenticated() && isAuthenticated().user.roleid === "1") {
-            console.log("editPost")
+
+        } else if (isAuthenticated() && isAuthenticated().user.roleid === "9") {
+
         } else {
             this.props.history.push("/posts.php");
         }
@@ -138,10 +138,6 @@ class Editpost extends Component {
 
         this.setState({[name]: value, fileSize});
 
-        // const value = event.target.value;
-        // this.setState({
-        //     [name]: value
-        // });
     }
 
     handleDelete() {
@@ -150,7 +146,7 @@ class Editpost extends Component {
         });
 
         const {post_uuid} = this.state;
-        this.props.userDelete(post_uuid).then(result => {
+        this.props.userDelete(post_uuid).then(() => {
             alert("thanh cong");
             this.props.history.push("/posts.php");
         }).catch(err => {
@@ -167,7 +163,7 @@ class Editpost extends Component {
         const {post_uuid} = this.state;
 
         this.props.usePostEdit(post_uuid, this.formData).then((result) => {
-            this.props.history.push("/posts.php");
+            this.props.history.push(`/post.php/${result.slug}`);
         })
     }
 
@@ -175,7 +171,7 @@ class Editpost extends Component {
         <div className="mt-5 mb-5">
             <img className="hover-zoom"
                  style={{width: "30%"}}
-                 src={`${process.env.REACT_APP_API_URL}/api/post/photo.php/${post_uuid}?${new Date().getTime()}`}
+                 src={`${process.env.REACT_APP_API_URL}/api/post/photo.php/${post_uuid}`}
                  onError={i => (i.target.src = `${avatar}`)}
                  alt={title}/>
             <Postform value={this.state} onChange={(event) => this.onChangeForm(event)}/>

@@ -31,6 +31,6 @@ function crudReducer(user = initialState, action) {
         default:
             return user;
     }
-};
+}
 
 export default crudReducer;

@@ -22,15 +22,15 @@ class Login extends Component {
     }
 
     componentDidMount() {
-      if(isAuthenticated()){
-          this.setState({
-              login: true
-          });
-      }else {
-         this.setState({
-             login: false
-         });
-      }
+        if (isAuthenticated()) {
+            this.setState({
+                login: true
+            });
+        } else {
+            this.setState({
+                login: false
+            });
+        }
     }
 
     onChangeLogin = name => event => {
@@ -48,7 +48,6 @@ class Login extends Component {
             password: password,
         };
         loginData(data).then((results) => {
-            console.log(results.status)
             if (results.data.error) {
                 this.setState({error: results.data.error, loading: false});
                 alert(results.data.error);
@@ -63,29 +62,33 @@ class Login extends Component {
     }
 
     loginForm = (username, password) => (
-        <div className="col-6">
-            <div className="form-group">
-                <label>Username & Email</label>
-                <input type="text" className="form-control"
-                       placeholder="Username & Email"
-                       value={username}
-                       onChange={this.onChangeLogin("username")}
+        <div className="row">
+            <div className="col-6">
+                <div className="form-group">
+                    <label>Username & Email</label>
+                    <input type="text" className="form-control"
+                           placeholder="Username & Email"
+                           value={username}
+                           onChange={this.onChangeLogin("username")}
+                           minLength="6"
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Password</label>
+                    <input type="password" className="form-control"
+                           placeholder="Password"
+                           value={password}
+                           onChange={this.onChangeLogin("password")}
+                           minLength="6"
+                    />
 
-                />
+                </div>
+                <button onClick={this.submitLogin}
+                        className="btn btn-primary m-1">Sign In
+                </button>
             </div>
-            <div className="form-group">
-                <label>Password</label>
-                <input type="password" className="form-control"
-                       placeholder="Password"
-                       value={password}
-                       onChange={this.onChangeLogin("password")}
-                />
-
-            </div>
-            <button onClick={this.submitLogin}
-                    className="btn btn-primary m-1">Sign In
-            </button>
         </div>
+
     )
 
     render() {
@@ -104,9 +107,10 @@ class Login extends Component {
                 <HeadMeta head={head}/>
                 <div className="container">
                     <h2 className="text-center">Login</h2>
-                    {loading ? (<Loading/>) : ("")}
-                    <div className="row">
-                        {this.loginForm(username, password)}
+
+                    <div>
+                        {!loading ? this.loginForm(username, password) : (<Loading/>)}
+
 
                     </div>
                 </div>
