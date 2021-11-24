@@ -7,15 +7,13 @@ import {
 import Dashboard from "../services/dashboard.service";
 
 import io from 'socket.io-client';
-
-const socket = io(process.env.REACT_APP_WS, {
-    withCredentials: true,
-    transports: ['websocket']
-});
-
-
+let socket;
 export const useConnect = () => async (dispatch) => {
     try {
+       socket = io(process.env.REACT_APP_WS, {
+            withCredentials: true,
+            transports: ['websocket']
+        });
         socket.on('server connect', function (message) {
             const people = JSON.parse(message);
             dispatch({

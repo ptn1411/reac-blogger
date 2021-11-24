@@ -26,6 +26,12 @@ export const authenticate = (jwt, next) => {
         next();
     }
 };
+export const authenticateFirebase = (jwt, next) => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('auth', JSON.stringify(jwt));
+        next();
+    }
+};
 
 export const isAuthenticated = () => {
     if (typeof window == 'undefined') {

@@ -15,14 +15,14 @@ const HeadMeta = (props) => {
             />
             <meta name="keywords" content={keywords}/>
 
+            <meta name="description" content="__META_DESCRIPTION__"/>
+            <meta name="og:title" content="__META_OG_TITLE__"/>
+            <meta property="og:url" content="__META_OG_URL__" />
+            <meta property="og:site_name" content="__META_OG_SITE_NAME__" />
+            <meta name="og:description" content="__META_OG_DESCRIPTION__"/>
+            <meta name="og:image" content="__META_OG_IMAGE__"/>
+
             <link rel="apple-touch-icon" href={logo}/>
-            <meta property="og:title" content={title} />
-            <meta property="og:url" content="https://phamthanhnam.com" />
-            <meta property="og:site_name" content="phamthanhnam.com" />
-            <meta property="og:image:width" content="600" />
-            <meta property="og:image:height" content="315" />
-            <meta property="og:description" content={description} />
-            <meta property="og:image" content={logo} />
             <link
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
                 rel="stylesheet"

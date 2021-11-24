@@ -14,15 +14,19 @@ import editPost from "../components/screens/editpost";
 import Notfound from "../components/screens/notfound";
 import PrivateRoute from "../auth/privateroute";
 import Dashboard from "../components/screens/dashboard";
+import Chat from "../components/screens/chat";
+import Message from "../components/screens/message";
 import {useConnect} from "../actions/dashboard";
 
 class MainRouter extends Component {
 
     componentDidMount() {
-        this.props.useConnect()
+        this.props.useConnect();
+
     }
 
     render() {
+
         return (
             <Router>
                 <Navbar/>
@@ -43,6 +47,8 @@ class MainRouter extends Component {
                     <Route exact path="/post.php/:uuid" component={Postuuid}/>
                     <PrivateRoute exact path="/postedit.php/:uuid" component={editPost}/>
                     <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+                    <PrivateRoute exact path="/chat/:room_id/:room_name" component={Chat}/>
+                    <PrivateRoute exact path="/message" component={Message}/>)} />
 
                     <Route exact path="/notfound.php" component={Notfound}/>
                     <Route exact path="*" component={Notfound}/>
@@ -59,6 +65,6 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
     useConnect
 })(MainRouter);

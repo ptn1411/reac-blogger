@@ -14,3 +14,11 @@ export const POST_PAGE = "POST_PAGE";
 export const CONNECT = "CONNECT";
 export const USER_COUNT = "USER_COUNT";
 export const POST_COUNT = "POST_COUNT";
+
+
+export const CREATE_ROOM = "CREATE_ROOM";
+export const OUTPUT_ROOM = "OUTPUT_ROOM";
+export const JOIN_ROOM = "JOIN_ROOM";
+
+
+export const SEND_MESSAGES = "SEND_MESSAGES";

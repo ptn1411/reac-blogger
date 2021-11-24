@@ -4,7 +4,11 @@ import {
     POST_COUNT
 } from "../actions/types";
 
-const initialState = [];
+const initialState ={
+    connect:[],
+    countuser:[],
+    countpost:[]
+};
 
 function dashboardReducer(dashboard = initialState, action) {
     const {type, payload} = action;

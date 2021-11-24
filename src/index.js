@@ -4,7 +4,7 @@ import App from './App';
 import {HelmetProvider} from 'react-helmet-async';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
-
+import './firebase';
 import store from './store';
 
 ReactDOM.render(
@@ -12,7 +12,6 @@ ReactDOM.render(
         <Provider store={store}>
             <HelmetProvider>
                 <App/>
-
             </HelmetProvider>
         </Provider>
     </React.StrictMode>,

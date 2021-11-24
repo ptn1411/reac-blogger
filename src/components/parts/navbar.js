@@ -47,6 +47,9 @@ class Navbar extends Component {
                                             <NavLink className="nav-link" to="/newpost.php">New Post</NavLink>
                                         </li>
                                         <li className="nav-item">
+                                            <NavLink className="nav-link" to="/message">Message</NavLink>
+                                        </li>
+                                        <li className="nav-item">
                                             <span className="nav-link" onClick={this.onClickLogout}>Logout</span>
                                         </li>
                                     </Fragment>
